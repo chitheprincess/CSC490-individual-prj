@@ -1,4 +1,4 @@
-from wtforms import Form, FloatField, validators
+from wtforms import Form, FloatField, validators, StringField
 from math import pi
 
 
@@ -21,4 +21,16 @@ class InputForm(Form):
 
     Beta = FloatField(
         label='Beta', default=1,
+        validators=[validators.InputRequired()])
+
+    Initial_condition = StringField(
+        'Initial Condition', default="sin(x)",
+        validators=[validators.InputRequired()])
+
+    Boundary_1 = FloatField(
+        label='Boundary condition', default=0,
+        validators=[validators.InputRequired()])
+
+    Boundary_2 = FloatField(
+        label='Boundary condition', default=0,
         validators=[validators.InputRequired()])
