@@ -16,10 +16,15 @@ def firstpage():
 @app.route('/heat_unsolved', methods=['GET', 'POST'])
 def index():
     form = InputForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST' and form.validate() and request.form['btn'] == "Show heat map":
         print(form.initial_condition.data)
         result = plot_heatmap(form.L.data, form.delta_x.data, form.T.data, form.delta_t.data,
                               form.beta.data, form.boundary_1.data, form.boundary_2.data, form.initial_condition.data)
+
+    elif request.method == 'POST' and form.validate() and request.form['btn'] == "Show 3D graph":
+        print(form.initial_condition.data)
+        result = plot_3D(form.L.data, form.delta_x.data, form.T.data, form.delta_t.data,
+                         form.beta.data, form.boundary_1.data, form.boundary_2.data, form.initial_condition.data)
 
     else:
         result = None
