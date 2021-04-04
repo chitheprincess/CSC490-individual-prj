@@ -14,7 +14,7 @@ def compute_f(x, initial_condition):
     return eval(initial_condition)
 
 
-def compute_matrix(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial_condition):
+def compute_matrix(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, f_x):
     sigma = beta * delta_t / (delta_x ** 2)
     N = int(L / delta_x)
     M = int(T / delta_t)
@@ -39,7 +39,7 @@ def compute_matrix(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial
 
     u0 = np.zeros((int(N - 1), 1))
     for i in range((int(N - 1))):
-        u0[i] = compute_f(((i + 1) * delta_x), initial_condition)
+        u0[i] = compute_f(((i + 1) * delta_x), f_x)
 
     u = []
     u.append(u0)
@@ -60,9 +60,9 @@ def compute_matrix(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial
     return bigU
 
 
-def plot_heatmap(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial_condition, resolution=500):
+def plot_heatmap(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, f_x, resolution=500):
     bigU = compute_matrix(L, delta_x, T, delta_t, beta,
-                          boundary_1, boundary_2, initial_condition)
+                          boundary_1, boundary_2, f_x)
     print(bigU.shape)
     plt.figure()
     sns.heatmap(bigU)
