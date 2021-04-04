@@ -7,7 +7,7 @@ class InputForm(Form):
         label='Length of the rod', default=1.0,
         validators=[validators.InputRequired()])
 
-    Delta_x = FloatField(
+    delta_x = FloatField(
         label='Space step size', default=0.01,
         validators=[validators.InputRequired()])
 
@@ -15,22 +15,22 @@ class InputForm(Form):
         label='Time', default=pi,
         validators=[validators.InputRequired()])
 
-    Delta_t = FloatField(
+    delta_t = FloatField(
         label='Space step size', default=0.01,
         validators=[validators.InputRequired()])
 
-    Beta = FloatField(
+    beta = FloatField(
         label='Beta', default=1,
         validators=[validators.InputRequired()])
 
-    Initial_condition = StringField(
+    initial_condition = StringField(
         'Initial Condition', default="sin(x)",
         validators=[validators.InputRequired()])
 
-    Boundary_1 = FloatField(
+    boundary_1 = FloatField(
         label='Boundary condition', default=0,
         validators=[validators.InputRequired()])
 
-    Boundary_2 = FloatField(
+    boundary_2 = FloatField(
         label='Boundary condition', default=0,
         validators=[validators.InputRequired()])
