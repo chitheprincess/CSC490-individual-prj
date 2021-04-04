@@ -81,3 +81,40 @@ def plot_heatmap(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial_c
     plotfile = os.path.join('static', str(time.time()) + '.png')
     plt.savefig(plotfile)
     return plotfile
+
+
+def plot_3D(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial_condition, resolution=500):
+    bigU = compute_matrix(L, delta_x, T, delta_t, beta,
+                          boundary_1, boundary_2, initial_condition)
+    N = int(L / delta_x)
+    M = int(T / delta_t)
+
+    x = []
+    for i in range(int(N)+1):
+        x.append(i*delta_x)
+
+    t = []
+    for i in range(int(M)+1):
+        t.append(i*delta_t)
+
+    hf = plt.figure()
+    ha = hf.add_subplot(111, projection='3d')
+
+    # `plot_surface` expects `x` and `y` data to be 2D
+    X, T = np.meshgrid(x, t)
+    ha.plot_surface(X.T, T.T, bigU, color="red")
+    ha.set_xlabel("x", fontsize=20)
+    ha.set_ylabel("t", fontsize=20)
+    ha.set_zlabel("u", fontsize=20)
+
+    if not os.path.isdir('static'):
+        os.mkdir('static')
+    else:
+        # Remove old plot files
+        for filename in glob.glob(os.path.join('static', '*.png')):
+            os.remove(filename)
+    # Use time since Jan 1, 1970 in filename in order make
+    # a unique filename that the browser has not chached
+    plotfile = os.path.join('static', str(time.time()) + '.png')
+    plt.savefig(plotfile)
+    return plotfile

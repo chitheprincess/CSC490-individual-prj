@@ -1,11 +1,19 @@
 from model import InputForm
 from flask import Flask, render_template, request
+from compute import plot_3D
 from compute import plot_heatmap
+
 
 app = Flask(__name__)
 
 
-@app.route('/pde', methods=['GET', 'POST'])
+@app.route('/')
+def firstpage():
+    """Entry point; the view for the main page"""
+    return render_template('firstpage.html')
+
+
+@app.route('/heat_unsolved', methods=['GET', 'POST'])
 def index():
     form = InputForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -16,7 +24,7 @@ def index():
     else:
         result = None
 
-    return render_template('view.html', form=form, result=result)
+    return render_template('heat_equation.html', form=form, result=result)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from wtforms import Form, FloatField, validators, StringField
+from wtforms import Form, FloatField, validators, StringField, TextField
 from math import pi
 import math
 
@@ -11,7 +11,7 @@ class InputForm(Form):
         label='Space step size', default=0.01,
         validators=[validators.InputRequired()])
     T = FloatField(
-        label='Time', default=pi,
+        label='Time', default=1,
         validators=[validators.InputRequired()])
     delta_t = FloatField(
         label='Space step size', default=0.01,
@@ -19,7 +19,7 @@ class InputForm(Form):
     beta = FloatField(
         label='Beta', default=1,
         validators=[validators.InputRequired()])
-    initial_condition = StringField(
+    initial_condition = TextField(
         'Initial Condition', default="math.sin(x)",
         validators=[validators.InputRequired()])
     boundary_1 = FloatField(
