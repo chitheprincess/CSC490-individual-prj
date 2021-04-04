@@ -5,6 +5,9 @@ import math
 from numpy.linalg import inv
 from io import BytesIO
 import base64
+import os
+import time
+import glob
 
 
 def compute_f(x, initial_condition):
@@ -60,13 +63,21 @@ def compute_matrix(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial
 def plot_heatmap(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial_condition, resolution=500):
     bigU = compute_matrix(L, delta_x, T, delta_t, beta,
                           boundary_1, boundary_2, initial_condition)
-    sns.set()
+    print(bigU.shape)
+    plt.figure()
     sns.heatmap(bigU)
+    print("here")
     plt.ylabel("x")
     plt.xlabel("t")
 
-    figfile = BytesIO()
-    plt.savefig(figfile, format='png')
-    figfile.seek(0)  # rewind to beginning of file
-    figdata_png = base64.b64encode(figfile.getvalue())
-    return figdata_png
+    if not os.path.isdir('static'):
+        os.mkdir('static')
+    else:
+        # Remove old plot files
+        for filename in glob.glob(os.path.join('static', '*.png')):
+            os.remove(filename)
+    # Use time since Jan 1, 1970 in filename in order make
+    # a unique filename that the browser has not chached
+    plotfile = os.path.join('static', str(time.time()) + '.png')
+    plt.savefig(plotfile)
+    return plotfile
