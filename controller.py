@@ -1,7 +1,7 @@
 from model import HeatForm, WaveForm
 from flask import Flask, render_template, request
 from compute_heat import plot_3D, plot_heatmap
-from compute_wave import plot_3D_wave
+from compute_wave import plot_3D_wave, plot_gif
 
 app = Flask(__name__)
 
@@ -33,8 +33,8 @@ def heat():
 def wave():
     form = WaveForm(request.form)
     if request.method == 'POST' and form.validate():
-        result = plot_3D_wave(form.L.data, form.delta_x.data, form.T.data, form.delta_t.data,
-                              form.c.data, form.f_x.data, form.g_x.data, form.boundary_1.data, form.boundary_2.data)
+        result = plot_gif(form.L.data, form.delta_x.data, form.T.data, form.delta_t.data,
+                          form.c.data, form.f_x.data, form.g_x.data, form.boundary_1.data, form.boundary_2.data)
     else:
         result = None
 

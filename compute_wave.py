@@ -9,6 +9,7 @@ import os
 import time
 import glob
 from math import pi
+import matplotlib.animation
 
 
 def compute_f(x, f_x):
@@ -95,4 +96,63 @@ def plot_3D_wave(L, delta_x, T, delta_t, c, f_x, g_x, boundary_1, boundary_2, re
     # a unique filename that the browser has not chached
     plotfile = os.path.join('static', str(time.time()) + '.png')
     plt.savefig(plotfile)
+    return plotfile
+
+
+def plot_gif(L, delta_x, T, delta_t, c, f_x, g_x, boundary_1, boundary_2, resolution=500):
+    bigU = compute_matrix(L, delta_x, T, delta_t, c, f_x,
+                          g_x, boundary_1, boundary_2)
+    N = int(L / delta_x)
+    M = int(T / delta_t)
+
+    x = []
+    for i in range(int(N + 1)):
+        x.append(i * delta_x)
+
+    t = []
+    for i in range(int(M + 1)):
+        t.append(i * delta_t)
+        fig = plt.figure()
+
+    ax = fig.add_subplot(111, projection='3d')
+
+    # `plot_surface` expects `x` and `y` data to be 2D
+    TT, XX = np.meshgrid(t, x)
+    ax.plot_surface(XX, TT, bigU)
+    ax.set_xlabel("x", fontsize=20)
+    ax.set_ylabel("t", fontsize=20)
+    ax.set_zlabel("u", fontsize=20)
+
+    def generateBigU(i):
+        newGenerated = np.zeros((int(N + 1), int(M + 1)))
+        for row in range(int(N + 1)):
+            for col in range(int(M + 1)):
+                newGenerated[row, (np.mod(
+                    (col + i), (int(M + 1))))] = bigU[row, col]
+        return newGenerated
+
+    allU = []
+    for i in range(int(M + 1)):
+        allU.append(generateBigU(i))
+
+    def data(i):
+        L = allU[i]
+        ax.clear()
+        ax.plot_surface(XX, TT, L)
+
+    ani = matplotlib.animation.FuncAnimation(
+        fig, data, len(allU), interval=1, repeat=True)
+
+    writergif = matplotlib.animation.PillowWriter(fps=1000)
+
+    if not os.path.isdir('static'):
+        os.mkdir('static')
+    else:
+        # Remove old plot files
+        for filename in glob.glob(os.path.join('static', '*.gif')):
+            os.remove(filename)
+    # Use time since Jan 1, 1970 in filename in order make
+    # a unique filename that the browser has not chached
+    plotfile = os.path.join('static', str(time.time()) + '.gif')
+    ani.save(plotfile, writer=writergif)
     return plotfile
