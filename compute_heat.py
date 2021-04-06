@@ -8,6 +8,7 @@ import base64
 import os
 import time
 import glob
+import mpld3
 
 
 def compute_f(x, initial_condition):
@@ -107,14 +108,17 @@ def plot_3D(L, delta_x, T, delta_t, beta, boundary_1, boundary_2, initial_condit
     ha.set_ylabel("t", fontsize=20)
     ha.set_zlabel("u", fontsize=20)
 
+    html_str = mpld3.fig_to_html(hf)
+
     if not os.path.isdir('static'):
         os.mkdir('static')
     else:
         # Remove old plot files
-        for filename in glob.glob(os.path.join('static', '*.png')):
+        for filename in glob.glob(os.path.join('static', '*.html')):
             os.remove(filename)
     # Use time since Jan 1, 1970 in filename in order make
     # a unique filename that the browser has not chached
-    plotfile = os.path.join('static', str(time.time()) + '.png')
-    plt.savefig(plotfile)
-    return plotfile
+    plotfile = os.path.join('static', str(time.time()) + '.html')
+    Html_file = open(plotfile, "w")
+    fig = Html_file.write(html_str)
+    return fig
