@@ -32,9 +32,12 @@ def heat():
 @app.route('/wave', methods=['GET', 'POST'])
 def wave():
     form = WaveForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST' and form.validate() and request.form['btn'] == "Show gif":
         result = plot_gif(form.L.data, form.delta_x.data, form.T.data, form.delta_t.data,
                           form.c.data, form.f_x.data, form.g_x.data, form.boundary_1.data, form.boundary_2.data)
+    elif request.method == 'POST' and form.validate() and request.form['btn'] == "Show 3D graph":
+        result = plot_3D_wave(form.L.data, form.delta_x.data, form.T.data, form.delta_t.data,
+                              form.c.data, form.f_x.data, form.g_x.data, form.boundary_1.data, form.boundary_2.data)
     else:
         result = None
 
