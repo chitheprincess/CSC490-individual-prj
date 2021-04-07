@@ -8,13 +8,16 @@
         </tr>
         {% endfor %}
     </table>
-    <p><input type=submit name="btn" value="Show heat map" >
-    <input type=submit name="btn" value="Show 3D graph" >
+    <p>
+    <input type=submit name="btn" value="Show heat map" >
+    <input type=submit name="btn" value="Show 3D graph">
 </form>
 </p>
 
 <p>
     {% if result != None %}
-    <img src="{{ result }}" >
+
+    <img src="{{ result }}">
+
     {% endif %}
 </p>
