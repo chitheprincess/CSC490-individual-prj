@@ -1,3 +1,5 @@
+
+
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   TeX: {
@@ -9,9 +11,11 @@ MathJax.Hub.Config({
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
-This applet visualizes the heat equation \(
-U_t = \Beta U_{xx}, \hbox{ for } t\in [0,T]
-\).
+<p class="introduction">This applet visualizes the heat equation \(
+U_t = \beta U_{xx}, \hbox{ for } t\in [0,T]
+\).</p>
+
+
 
 <form method=post action="">
     <table>
@@ -21,11 +25,18 @@ U_t = \Beta U_{xx}, \hbox{ for } t\in [0,T]
                 <table>
                     {% for field in form %}
                     <tr>
-                        <td>\( {{ field.name }} \)</td>
+                        <td>{{ field.name }}</td>
                         <td>{{ field(size=12) }}</td>
                         <td>{{ field.label }}</td>
                         {% if field.errors %}
                         <td>
+                            <ul class=errors>
+                                {% for error in field.errors %}
+                                <li>
+                                    <font color="red">{{ error }}</font>
+                                </li>
+                                {% endfor %}
+                            </ul>
                         </td>
                         {% endif %}
                     </tr>

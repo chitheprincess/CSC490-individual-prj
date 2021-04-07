@@ -3,19 +3,35 @@ from math import pi
 import math
 
 
+def check_delta_T(form, field):
+    """Form validation: failure if delta_t  > T ."""
+    T = form.T.data
+    delta_t = field.data
+    if T < delta_t:
+        raise validators.ValidationError('Delta_t has to be smaller than T')
+
+
+def check_delta_X(form, field):
+    """Form validation: failure if delta_t  > T ."""
+    L = form.L.data
+    delta_x = field.data
+    if L < delta_x:
+        raise validators.ValidationError('Delta_x has to be smaller than L')
+
+
 class HeatForm(Form):
     L = FloatField(
         label='Length of the rod', default=pi,
         validators=[validators.InputRequired()])
     delta_x = FloatField(
         label='Space step size', default=0.01,
-        validators=[validators.InputRequired()])
+        validators=[validators.InputRequired(), check_delta_X])
     T = FloatField(
         label='Time', default=1,
         validators=[validators.InputRequired()])
     delta_t = FloatField(
         label='Space step size', default=0.01,
-        validators=[validators.InputRequired()])
+        validators=[check_delta_T, validators.InputRequired()])
     beta = FloatField(
         label='Beta', default=1,
         validators=[validators.InputRequired()])
@@ -36,13 +52,13 @@ class WaveForm(Form):
         validators=[validators.InputRequired()])
     delta_x = FloatField(
         label='Space step size', default=0.01,
-        validators=[validators.InputRequired()])
+        validators=[check_delta_X, validators.InputRequired()])
     T = FloatField(
         label='Time', default=1,
         validators=[validators.InputRequired()])
     delta_t = FloatField(
         label='Space step size', default=0.005,
-        validators=[validators.InputRequired()])
+        validators=[check_delta_T, validators.InputRequired()])
     c = FloatField(
         label='c', default=1,
         validators=[validators.InputRequired()])
