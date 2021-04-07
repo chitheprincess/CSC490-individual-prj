@@ -1,23 +1,52 @@
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "AMS"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"]
+  }
+});
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+This applet visualizes the heat equation \(
+U_t = \Beta U_{xx}, \hbox{ for } t\in [0,T]
+\).
+
 <form method=post action="">
     <table>
-        {% for field in form %}
+        <!-- table with forms to the left and plot to the right -->
         <tr>
-            <td>{{ field.name }}</td>
-            <td>{{ field }}</td>
-            <td>{{ field.label }}</td>
+            <td>
+                <table>
+                    {% for field in form %}
+                    <tr>
+                        <td>\( {{ field.name }} \)</td>
+                        <td>{{ field(size=12) }}</td>
+                        <td>{{ field.label }}</td>
+                        {% if field.errors %}
+                        <td>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+
+            <td>
+                <p>
+                    {% if result != None %}
+                    <img src="{{ result }}" width="600">
+                    {% endif %}
+                </p>
+            </td>
         </tr>
-        {% endfor %}
+        <tr>
+            <td>
+                <input type=submit name="btn" value="Show heat map">
+                <input type=submit name="btn" value="Show 3D graph">
+            </td>
+        </tr>
     </table>
-    <p>
-    <input type=submit name="btn" value="Show heat map" >
-    <input type=submit name="btn" value="Show 3D graph">
 </form>
-</p>
 
-<p>
-    {% if result != None %}
-
-    <img src="{{ result }}">
-
-    {% endif %}
-</p>
