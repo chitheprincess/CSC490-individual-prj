@@ -1,21 +1,80 @@
-<form method=post action="">
-    <table>
-        {% for field in form %}
-        <tr>
-            <td>{{ field.name }}</td>
-            <td>{{ field }}</td>
-            <td>{{ field.label }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p><input type=submit name="btn" value="Show 3D graph">
-        <input type=submit name="btn" value="Show gif">
-    
-</form>
-</p>
+<!DOCTYPE html>
+<html>
 
-<p>
-    {% if result != None %}
-    <img src="{{ result }}">
-    {% endif %}
-</p>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Numerical Visualization for the Wave Equation</title>
+</head>
+
+<body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+         equationNumbers: {  autoNumber: "AMS"  },
+         extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js"]
+      }
+    });
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <h1>Numerical Visualization for the Wave Equation</h1>
+
+    <p>This web page visualizes the one-dimenstional wave equation \(
+        U_{tt} = \beta U_{xx}\). The placement of a string of length L placecing on the x-axis over a period of
+        time T is displayed.
+    </p>
+
+
+    <form method=post action="">
+        <table>
+            <!-- table with forms to the left and plot to the right -->
+            <tr>
+                <td>
+                    <table>
+                        {% for field in form %}
+                        <tr>
+                            <td>\( {{ field.name }} \)</td>
+                            <td>{{ field(size=12) }}</td>
+                            <td>{{ field.label }}</td>
+                            {% if field.errors %}
+                            <td>
+                                <ul class=errors>
+                                    {% for error in field.errors %}
+                                    <li>
+                                        <font color="red">{{ error }}</font>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+
+                <td>
+                    <p>
+                        {% if result != None %}
+                        <img src="{{ result }}" width="500">
+                        {% endif %}
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        <input type=submit name="btn" value="Show 3D graph">
+                        <input type=submit name="btn" value="Show gif">
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <button><a class='button' href="/">Back to main page</a></button>
+
+
+
+</body>
